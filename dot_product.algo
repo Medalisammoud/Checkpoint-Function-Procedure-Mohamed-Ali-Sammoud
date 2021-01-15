@@ -1,0 +1,70 @@
+// PROCEDURE calculate_product
+PROCEDURE calculate_product(product1,product2:ARRAY_OF INTEGER,var resl:INTEGER)
+VAR
+    i,j:INTEGER;
+BEGIN
+    FOR i FROM 0 TO product1.length-1 STEP 1  DO
+        resl:=resl+product1[i]*product2[i];
+    END_FOR
+END
+// FUNCTION calculate_product
+FUNCTION calculate_product(product1,product2:ARRAY_OF INTEGER) : INTEGER
+VAR
+    i,j,resl:INTEGER;
+BEGIN
+    FOR i FROM 0 TO product1.length-1 STEP 1  DO
+        resl:=resl+product1[i]*product2[i];
+    END_FOR
+    RETURN resl ;
+END
+// ALGORITHM of Dot Product
+ALGORITHM dot_product
+VAR
+    List:   STRUCT
+               data : ARRAY_OF INTEGER[50]; // here we define the data type of our list
+               next :  List; // here we define the pointer to next element
+            END_STRUCT
+    first : ^List := NULL;
+    p : ^List := NULL;
+    product:ARRAY_OF INTEGER;
+    n_list:INTEGER;
+    n_table,count_tab:INTEGER;
+    count_list,result:INTEGER:=0;
+BEGIN
+// read length of list
+    REPEAT
+        write("Length of list pair :");
+        read(n_list);
+    UNTIL ((n_list>=2) AND (n_list % 2 =0))
+// read length of table
+    REPEAT
+        write("Length of table :");
+        read(n_table);
+    UNTIL ((n_table > 0)AND(n_table < 50))
+// read list of tables
+    WHILE (count_list < n_list) DO
+        FOR count_tab FROM 0 TO n_table-1 STEP 1  DO
+            write("Enter Number of Table :");
+            read(product[count_tab]);
+        END_FOR
+        p := create(List);
+        p^.data := product;
+        p^.next := first;
+        first := p;
+        count_list := count_list+1;
+    END_WHILE
+    WHILE (p^.next!=NULL) DO
+        first:=p^.next;
+        // PROCEDURE calculate_product
+        calculate_product(p^.data,first^.data,result);
+        // FUNCTION calculate_product
+        result:=calculate_product(p^.data,first^.data);
+        IF (result=0) THEN
+            write("The dot product of two orthogonal");
+        ELSE
+            write("The dot product of two Not orthogonal");
+        END_IF
+        p:=first;
+        count_list:=count_list + 1;
+    END_WHILE
+END
