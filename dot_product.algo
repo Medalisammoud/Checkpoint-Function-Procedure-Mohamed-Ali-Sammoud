@@ -3,45 +3,54 @@ PROCEDURE calculate_product(product1,product2:ARRAY_OF INTEGER,var resl:INTEGER)
 VAR
     i,j:INTEGER;
 BEGIN
+IF (product1.length=product2.length) THEN
     FOR i FROM 0 TO product1.length-1 STEP 1  DO
         resl:=resl+product1[i]*product2[i];
     END_FOR
+    END_IF
+    resl=1;
 END
 // FUNCTION calculate_product
 FUNCTION calculate_product(product1,product2:ARRAY_OF INTEGER) : INTEGER
 VAR
     i,j,resl:INTEGER;
 BEGIN
+IF (product1.length=product2.length) THEN
     FOR i FROM 0 TO product1.length-1 STEP 1  DO
         resl:=resl+product1[i]*product2[i];
     END_FOR
+    else resl=1;
+    END_IF
     RETURN resl ;
 END
 // ALGORITHM of Dot Product
 ALGORITHM dot_product
 VAR
     List:   STRUCT
-               data : ARRAY_OF INTEGER[50]; // here we define the data type of our list
+               data : ARRAY_OF INTEGER[]; // here we define the data type of our list
                next :  List; // here we define the pointer to next element
             END_STRUCT
     first : ^List := NULL;
     p : ^List := NULL;
-    product:ARRAY_OF INTEGER;
+    product:ARRAY_OF INTEGER[];
     n_list:INTEGER;
+    i:INTEGER=0;
     n_table,count_tab:INTEGER;
-    count_list,result:INTEGER:=0;
+    result:INTEGER:=0;
 BEGIN
 // read length of list
     REPEAT
         write("Length of list pair :");
         read(n_list);
     UNTIL ((n_list>=2) AND (n_list % 2 =0))
+    // read list of tables
+    REPEAT
 // read length of table
     REPEAT
         write("Length of table :");
         read(n_table);
     UNTIL ((n_table > 0)AND(n_table < 50))
-// read list of tables
+// read list of table
     WHILE (count_list < n_list) DO
         FOR count_tab FROM 0 TO n_table-1 STEP 1  DO
             write("Enter Number of Table :");
@@ -53,6 +62,8 @@ BEGIN
         first := p;
         count_list := count_list+1;
     END_WHILE
+    i++;
+    UNTIL (i<n_list)
     WHILE (p^.next!=NULL) DO
         first:=p^.next;
         // PROCEDURE calculate_product
@@ -65,6 +76,5 @@ BEGIN
             write("The dot product of two Not orthogonal");
         END_IF
         p:=first;
-        count_list:=count_list + 1;
     END_WHILE
 END
